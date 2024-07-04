@@ -24,6 +24,19 @@ form {
     margin-bottom: 15px;
 }
 
+.form-group-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+#form-group-adult {
+    margin-left: 5px;
+}
+
+#form-group-children {
+    margin-right: 5px;
+}
+
 label {
     display: block;
     margin-bottom: 5px;
@@ -44,6 +57,9 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
 }
 
 button:hover {
