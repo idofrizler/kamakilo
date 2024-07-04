@@ -1,7 +1,8 @@
 const CONFIG = {
     WEIGHT_PER_UNIT: {
         hotdogs: 50,
-        chickenBreasts: 100
+        chickenBreasts: 100,
+        skewers: 100
     },
     RECOMMENDED_MEAT_PER_ADULT: {
         light: 150,
@@ -12,6 +13,8 @@ const CONFIG = {
     MEAT_NAMES_HE: {
         steaks: 'סטייקים',
         hotdogs: 'נקניקיות',
+        burgers: 'המבורגרים',
+        skewers: 'שיפודי פרגית',
         chickenBreasts: 'חזה עוף',
         kebabs: 'קבבים'
     }
