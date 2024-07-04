@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מחשבון ברביקיו</title>
+    <title>כמה קילו?</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>מחשבון ברביקיו</h1>
+        <h1>כמה קילו?</h1>
+        <h2>מחשבון ברביקיו</h2>
         <form id="bbqForm">
             <div class="form-group">
                 <label for="adults">מבוגרים:</label>
@@ -39,7 +40,14 @@
         </form>
         <div id="results"></div>
         <div id="totalMeat"></div>
+        <div id="copyContainer"></div>
+        <div id="copyMessage"></div>
     </div>
+
+    <footer>
+        <p style="text-align: center;">developed with❤️by <a href="https://x.com/idofrizler">@idofrizler</a></p>
+    </footer>
+
     <script src="{{ url_for('static', filename='config.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

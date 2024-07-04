@@ -12,6 +12,10 @@ body {
     border-radius: 10px;
 }
 
+h1 {
+    text-align: center;
+}
+
 form {
     margin-bottom: 20px;
 }
@@ -58,4 +62,49 @@ button:hover {
 input[type="range"] {
     width: 100%;
     margin-top: 10px;
+}
+
+#copyButton {
+    margin-top: 10px;
+}
+
+#copyMessage {
+    margin-top: 5px;
+    color: green; /* Change color to your preference */
+}
+
+#copyContainer {
+    margin-top: 10px;
+}
+
+#copyContainer button {
+    padding: 10px 20px;
+    background-color: #007BFF; /* Default color, change as needed */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#copyContainer button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+footer {
+    color: #333; /* Dark grey text color for contrast */
+    padding: 20px 0; /* Top and bottom padding */
+    text-align: center; /* Center-align the text */
+    font-size: 0.9rem; /* Slightly smaller font size for a professional look */
+    font-family: Arial, sans-serif; /* Professional font family */
+}
+
+footer a {
+    color: #007bff; /* Change the link color */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make it bold */
+}
+
+footer a:hover {
+    color: #0056b3; /* Darker shade on hover for contrast */
+    text-decoration: underline; /* Add underline on hover for emphasis */
 }

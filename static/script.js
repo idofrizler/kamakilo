@@ -40,6 +40,37 @@ function calculateMeat() {
     });
 
     displayResults(meatQuantities);
+
+    // Remove previously added copy button if any
+    var copyContainer = document.getElementById('copyContainer');
+    copyContainer.innerHTML = '';
+
+    // Add copy button only if there are results
+    if (Object.keys(meatQuantities).length > 0) {
+        var copyButton = document.createElement('button');
+        copyButton.textContent = 'העתק כמויות';
+        copyButton.onclick = copyToClipboard;
+        copyContainer.appendChild(copyButton);
+    }
+}
+
+function copyToClipboard() {
+    var copyText = "";
+    Object.keys(meatQuantities).forEach(meat => {
+        if (typeof meatQuantities[meat] === 'object') {
+            copyText += `${CONFIG.MEAT_NAMES_HE[meat]}: ${meatQuantities[meat].grams} גרם (${meatQuantities[meat].units} יחידות)\n`;
+        } else {
+            copyText += `${CONFIG.MEAT_NAMES_HE[meat]}: ${Math.ceil(meatQuantities[meat])} גרם\n`;
+        }
+    });
+
+    // Copy text to clipboard
+    navigator.clipboard.writeText(copyText).then(function() {
+        showCopyMessage("הועתק ללוח");
+    }, function(err) {
+        console.error('Could not copy text: ', err);
+        showCopyMessage("אירעה שגיאה בהעתקה");
+    });
 }
 
 function displayResults(meatQuantities) {
@@ -129,3 +160,12 @@ function adjustMeat(slider) {
 
     displayResults(meatQuantities);
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Replace "0 selected" with Hebrew text
+    var meatPreferencesSelect = document.getElementById('meatPreferences');
+    meatPreferencesSelect.setAttribute('data-placeholder', 'בחרו בשרים');
+
+    // Initialize or update the select2 instance if used
+    $(meatPreferencesSelect).select2();
+});
