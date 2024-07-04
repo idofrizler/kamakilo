@@ -2,6 +2,22 @@ let totalMeatQuantity = 0;
 let meatQuantities = {};
 let userAdjustedMeats = {};
 
+// Function to populate meat options from config.js
+function populateMeatPreferences() {
+    var meatPreferencesSelect = document.getElementById('meatPreferences');
+    var meatOptions = Object.keys(CONFIG.MEAT_NAMES_HE);
+
+    meatOptions.forEach(function(option) {
+        var optionElement = document.createElement('option');
+        optionElement.value = option;
+        optionElement.textContent = CONFIG.MEAT_NAMES_HE[option];
+        meatPreferencesSelect.appendChild(optionElement);
+    });
+}
+
+// Call the function to populate meat preferences on page load
+populateMeatPreferences();
+
 function calculateMeat() {
     var adultsInput = document.getElementById('adults');
     var kidsInput = document.getElementById('kids');
