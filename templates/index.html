@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחשבון ברביקיו</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>מחשבון ברביקיו</h1>
+        <form id="bbqForm">
+            <div class="form-group">
+                <label for="adults">מבוגרים:</label>
+                <input type="number" id="adults" name="adults" min="0" value="8" required>
+            </div>
+            <div class="form-group">
+                <label for="kids">ילדים:</label>
+                <input type="number" id="kids" name="kids" min="0" value="4" required>
+            </div>
+            <div class="form-group">
+                <label for="hungerLevel">רמת רעב:</label>
+                <select id="hungerLevel" name="hungerLevel" required>
+                    <option value="light">קל</option>
+                    <option value="moderate" selected>בינוני</option>
+                    <option value="veryHungry">רעב מאוד</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="meatPreferences">העדפות בשר:</label>
+                <select id="meatPreferences" name="meatPreferences" multiple required>
+                    <option value="steaks">סטייקים</option>
+                    <option value="hotdogs">נקניקיות</option>
+                    <option value="chickenBreasts">חזה עוף</option>
+                    <option value="kebabs">קבבים</option>
+                </select>
+            </div>
+            <button type="button" onclick="calculateMeat()">חשב</button>
+        </form>
+        <div id="results"></div>
+        <div id="totalMeat"></div>
+    </div>
+    <script src="{{ url_for('static', filename='config.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+python -m waitress --listen=*:8000 wsgi:app
