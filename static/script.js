@@ -94,71 +94,79 @@ function displayResults(meatQuantities) {
     totalMeatDiv.innerHTML = `<h3>סה"כ בשר: ${totalGrams} גרם</h3>`;
 }
 
+let adjustTimeout;
+
 function adjustMeat(slider) {
     var meat = slider.getAttribute('data-meat');
     var newGrams = parseInt(slider.value);
 
-    // Calculate total adjusted meat excluding the current meat being adjusted
-    var totalAdjustedMeatExcludingCurrent = 0;
-    Object.keys(meatQuantities).forEach(key => {
-        if (userAdjustedMeats[key] && key !== meat) {
-            if (typeof meatQuantities[key] === 'object') {
-                totalAdjustedMeatExcludingCurrent += meatQuantities[key].grams;
-            } else {
-                totalAdjustedMeatExcludingCurrent += meatQuantities[key];
-            }
-        }
-    });
+    // Clear previous timeout to debounce
+    clearTimeout(adjustTimeout);
 
-    // Calculate the remaining meat quantity that can be allocated
-    var remainingMeatForCurrent = totalMeatQuantity - totalAdjustedMeatExcludingCurrent;
-
-    // Ensure the new meat value does not exceed the remaining meat quantity and is not negative
-    if (newGrams > remainingMeatForCurrent) {
-        newGrams = remainingMeatForCurrent;
-    } else if (newGrams < 0) {
-        newGrams = 0;
-    }
-
-    // Update the meat quantity with the adjusted value
-    if (typeof meatQuantities[meat] === 'object') {
-        meatQuantities[meat].grams = newGrams;
-        meatQuantities[meat].units = Math.ceil(newGrams / CONFIG.WEIGHT_PER_UNIT[meat]);
-    } else {
-        meatQuantities[meat] = newGrams;
-    }
-
-    userAdjustedMeats[meat] = true; // Track user adjustments
-
-    var totalAdjustedMeat = 0;
-    Object.keys(meatQuantities).forEach(key => {
-        if (userAdjustedMeats[key]) {
-            if (typeof meatQuantities[key] === 'object') {
-                totalAdjustedMeat += meatQuantities[key].grams;
-            } else {
-                totalAdjustedMeat += meatQuantities[key];
-            }
-        }
-    });
-
-    var remainingMeat = totalMeatQuantity - totalAdjustedMeat;
-    var remainingMeats = Object.keys(meatQuantities).filter(key => !userAdjustedMeats[key]).length;
-
-    if (remainingMeats > 0) {
-        var newPerMeatQuantity = remainingMeat / remainingMeats;
+    // Set timeout to update after a short delay
+    adjustTimeout = setTimeout(function() {
+        // Calculate total adjusted meat excluding the current meat being adjusted
+        var totalAdjustedMeatExcludingCurrent = 0;
         Object.keys(meatQuantities).forEach(key => {
-            if (!userAdjustedMeats[key]) {
+            if (userAdjustedMeats[key] && key !== meat) {
                 if (typeof meatQuantities[key] === 'object') {
-                    meatQuantities[key].grams = Math.ceil(newPerMeatQuantity / CONFIG.WEIGHT_PER_UNIT[key]) * CONFIG.WEIGHT_PER_UNIT[key];
-                    meatQuantities[key].units = Math.ceil(newPerMeatQuantity / CONFIG.WEIGHT_PER_UNIT[key]);
+                    totalAdjustedMeatExcludingCurrent += meatQuantities[key].grams;
                 } else {
-                    meatQuantities[key] = Math.ceil(newPerMeatQuantity);
+                    totalAdjustedMeatExcludingCurrent += meatQuantities[key];
                 }
             }
         });
-    }
 
-    displayResults(meatQuantities);
+        // Calculate the remaining meat quantity that can be allocated
+        var remainingMeatForCurrent = totalMeatQuantity - totalAdjustedMeatExcludingCurrent;
+
+        // Ensure the new meat value does not exceed the remaining meat quantity and is not negative
+        if (newGrams > remainingMeatForCurrent) {
+            newGrams = remainingMeatForCurrent;
+        } else if (newGrams < 0) {
+            newGrams = 0;
+        }
+
+        // Update the meat quantity with the adjusted value
+        if (typeof meatQuantities[meat] === 'object') {
+            meatQuantities[meat].grams = newGrams;
+            meatQuantities[meat].units = Math.ceil(newGrams / CONFIG.WEIGHT_PER_UNIT[meat]);
+        } else {
+            meatQuantities[meat] = newGrams;
+        }
+
+        userAdjustedMeats[meat] = true; // Track user adjustments
+
+        var totalAdjustedMeat = 0;
+        Object.keys(meatQuantities).forEach(key => {
+            if (userAdjustedMeats[key]) {
+                if (typeof meatQuantities[key] === 'object') {
+                    totalAdjustedMeat += meatQuantities[key].grams;
+                } else {
+                    totalAdjustedMeat += meatQuantities[key];
+                }
+            }
+        });
+
+        var remainingMeat = totalMeatQuantity - totalAdjustedMeat;
+        var remainingMeats = Object.keys(meatQuantities).filter(key => !userAdjustedMeats[key]).length;
+
+        if (remainingMeats > 0) {
+            var newPerMeatQuantity = remainingMeat / remainingMeats;
+            Object.keys(meatQuantities).forEach(key => {
+                if (!userAdjustedMeats[key]) {
+                    if (typeof meatQuantities[key] === 'object') {
+                        meatQuantities[key].grams = Math.ceil(newPerMeatQuantity / CONFIG.WEIGHT_PER_UNIT[key]) * CONFIG.WEIGHT_PER_UNIT[key];
+                        meatQuantities[key].units = Math.ceil(newPerMeatQuantity / CONFIG.WEIGHT_PER_UNIT[key]);
+                    } else {
+                        meatQuantities[key] = Math.ceil(newPerMeatQuantity);
+                    }
+                }
+            });
+        }
+
+        displayResults(meatQuantities);
+    }, 200); // Adjust the debounce delay as needed
 }
 
 document.addEventListener('DOMContentLoaded', function() {
