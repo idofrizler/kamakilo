@@ -22,6 +22,7 @@ function calculateMeat() {
     var adultsInput = document.getElementById('adults');
     var kidsInput = document.getElementById('kids');
     var hungerLevelInput = document.getElementById('hungerLevel');
+    var eventTypeInput = document.getElementById('eventType');
     var meatPreferencesInput = document.getElementById('meatPreferences');
     var resultsDiv = document.getElementById('results');
     var totalMeatDiv = document.getElementById('totalMeat');
@@ -34,6 +35,7 @@ function calculateMeat() {
     var adults = parseInt(adultsInput.value);
     var kids = parseInt(kidsInput.value);
     var hungerLevel = hungerLevelInput.value;
+    var eventType = eventTypeInput.value;
     var selectedMeats = Array.from(meatPreferencesInput.selectedOptions).map(option => option.value);
 
     var totalPeople = adults + (kids * CONFIG.KIDS_FACTOR);
@@ -43,17 +45,49 @@ function calculateMeat() {
     meatQuantities = {};
     userAdjustedMeats = {}; // Clear user adjustments
 
-    selectedMeats.forEach(meat => {
-        var meatGrams = totalMeatQuantity / selectedMeats.length;
-        if (CONFIG.WEIGHT_PER_UNIT[meat]) {
-            meatQuantities[meat] = {
-                grams: Math.ceil(meatGrams / CONFIG.WEIGHT_PER_UNIT[meat]) * CONFIG.WEIGHT_PER_UNIT[meat],
-                units: Math.ceil(meatGrams / CONFIG.WEIGHT_PER_UNIT[meat])
-            };
-        } else {
-            meatQuantities[meat] = meatGrams;
-        }
-    });
+    let premiumMeats = selectedMeats.filter(meat => CONFIG.MEAT_COST.PREMIUM.includes(meat));
+    let cheapMeats = selectedMeats.filter(meat => CONFIG.MEAT_COST.CHEAP.includes(meat));
+    let otherMeats = selectedMeats.filter(meat => !premiumMeats.includes(meat) && !cheapMeats.includes(meat));
+
+    let premiumMeatWeight = 0;
+    let cheapMeatWeight = 0;
+
+    switch (eventType) {
+        case 'premium':
+            premiumMeatWeight = totalMeatQuantity * 0.75;
+            cheapMeatWeight = totalMeatQuantity - premiumMeatWeight;
+            let nonPremiumMeats = cheapMeats.concat(otherMeats);
+            if (premiumMeats.length === 0) {
+                distributeMeat(nonPremiumMeats, totalMeatQuantity);                
+                break;
+            }
+            if (nonPremiumMeats.length === 0) {
+                distributeMeat(premiumMeats, totalMeatQuantity);
+                break;
+            }
+            distributeMeat(premiumMeats, premiumMeatWeight);
+            distributeMeat(nonPremiumMeats, cheapMeatWeight);                
+            break;
+        case 'costEffective':
+            cheapMeatWeight = totalMeatQuantity * 0.75;
+            premiumMeatWeight = totalMeatQuantity - cheapMeatWeight;
+            let nonCheapMeats = premiumMeats.concat(otherMeats);
+            if (cheapMeats.length === 0) {
+                distributeMeat(nonCheapMeats, totalMeatQuantity);
+                break;
+            }
+            if (nonCheapMeats.length === 0) {
+                distributeMeat(cheapMeats, totalMeatQuantity);
+                break;
+            }
+            distributeMeat(cheapMeats, cheapMeatWeight);
+            distributeMeat(nonCheapMeats, premiumMeatWeight);
+            break;
+        case 'standard':
+        default:
+            distributeMeat(selectedMeats, totalMeatQuantity);
+            break;
+    }
 
     displayResults(meatQuantities);
 
@@ -68,6 +102,20 @@ function calculateMeat() {
         copyButton.onclick = copyToClipboard;
         copyContainer.appendChild(copyButton);
     }
+}
+
+function distributeMeat(meats, weight) {
+    meats.forEach(meat => {
+        var meatGrams = weight / meats.length;
+        if (CONFIG.WEIGHT_PER_UNIT[meat]) {
+            meatQuantities[meat] = {
+                grams: Math.ceil(meatGrams / CONFIG.WEIGHT_PER_UNIT[meat]) * CONFIG.WEIGHT_PER_UNIT[meat],
+                units: Math.ceil(meatGrams / CONFIG.WEIGHT_PER_UNIT[meat])
+            };
+        } else {
+            meatQuantities[meat] = meatGrams;
+        }
+    });
 }
 
 function copyToClipboard() {
@@ -185,11 +233,3 @@ function adjustMeat(slider) {
     }, 200); // Adjust the debounce delay as needed
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Replace "0 selected" with Hebrew text
-    var meatPreferencesSelect = document.getElementById('meatPreferences');
-    meatPreferencesSelect.setAttribute('data-placeholder', 'בחרו בשרים');
-
-    // Initialize or update the select2 instance if used
-    $(meatPreferencesSelect).select2();
-});
