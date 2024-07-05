@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>כמה קילו?</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script type="text/javascript">
+        var appInsights=window.appInsights||function(a){
+            function e(a){
+                t[a]=function(){
+                    var e=arguments;t.queue.push(function(){
+                        t[a].apply(t,e)
+                    })
+                }
+            }
+            var t={config:a},n=document,o=window,i="script",s=n.createElement(i),r=n.getElementsByTagName(i)[0];
+            for(s.src="https://az416426.vo.msecnd.net/scripts/a/ai.0.js",r.parentNode.insertBefore(s,r),t.cookie=n.cookie,t.queue=[],e("trackEvent"),e("trackPageView"),e("trackException"),e("trackMetric"),e("trackDependency"),e("trackTrace"),e("setAuthenticatedUserContext"),e("clearAuthenticatedUserContext");t.queue.length;){
+                var c=t.queue.shift();t[c[0]].apply(t,c.slice(1))
+            }
+            return t
+        }({
+            instrumentationKey:"63aa1841-c6f2-4739-97df-a839e5f680cc"
+        });
+        window.appInsights=appInsights,appInsights.trackPageView();
+    </script>
 </head>
 <body>
     <div class="container">
@@ -58,18 +77,15 @@
     <script src="{{ url_for('static', filename='config.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script type="text/javascript">
-        !function(t,e){var n=window,o="script",a=t.createElement(o),i=t.getElementsByTagName(o)[0];n[n[e]=n[e]||function(){(n[e].q=n[e].q||[]).push(arguments)},"load"].push(function(){var t=e.createElement(o),n=e.getElementsByTagName(o)[0];t.src="https://az416426.vo.msecnd.net/scripts/a/ai.0.js",n.parentNode.insertBefore(t,n)})}(document,"appInsights");
-
-        var appInsights=window.appInsights||function(config){
-            function r(config){t[config]=function(){var i=arguments;t[config].queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s=u.createElement(o),i=u.getElementsByTagName(o)[0];s.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",i.parentNode.insertBefore(s,i);try{t.cookie=u.cookie}catch(e){}t.queue=[],t.version="1.0";for(var n=["Event","Exception","Metric","PageView","Trace","Dependency"];n.length;)r("track"+n.pop());return config.disableExceptionTracking||(n="onerror",r("_"+n),e[n]=t["_"+n]),t
-        }({
-            instrumentationKey: "63aa1841-c6f2-4739-97df-a839e5f680cc"
-        });
-
-        window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();
-
-        document.getElementById('footerLink').addEventListener('click', function() {
-            appInsights.trackEvent({ name: 'FooterLinkClicked' });
+        document.addEventListener("DOMContentLoaded", function() {
+            var footerLink = document.getElementById('footerLink');
+            if (footerLink) {
+                footerLink.addEventListener('click', function() {
+                    if (window.appInsights) {
+                        appInsights.trackEvent({ name: 'FooterLinkClicked' });
+                    }
+                });
+            }
         });
     </script>
 </body>
