@@ -52,10 +52,25 @@
     </div>
 
     <footer>
-        <p style="text-align: center;">developed with ❤️ by <a href="https://x.com/idofrizler">@idofrizler</a></p>
+        <p style="text-align: center;">developed with ❤️ by <a href="https://x.com/idofrizler" id="footerLink">@idofrizler</a></p>
     </footer>
 
     <script src="{{ url_for('static', filename='config.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script type="text/javascript">
+        !function(t,e){var n=window,o="script",a=t.createElement(o),i=t.getElementsByTagName(o)[0];n[n[e]=n[e]||function(){(n[e].q=n[e].q||[]).push(arguments)},"load"].push(function(){var t=e.createElement(o),n=e.getElementsByTagName(o)[0];t.src="https://az416426.vo.msecnd.net/scripts/a/ai.0.js",n.parentNode.insertBefore(t,n)})}(document,"appInsights");
+
+        var appInsights=window.appInsights||function(config){
+            function r(config){t[config]=function(){var i=arguments;t[config].queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s=u.createElement(o),i=u.getElementsByTagName(o)[0];s.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",i.parentNode.insertBefore(s,i);try{t.cookie=u.cookie}catch(e){}t.queue=[],t.version="1.0";for(var n=["Event","Exception","Metric","PageView","Trace","Dependency"];n.length;)r("track"+n.pop());return config.disableExceptionTracking||(n="onerror",r("_"+n),e[n]=t["_"+n]),t
+        }({
+            instrumentationKey: "63aa1841-c6f2-4739-97df-a839e5f680cc"
+        });
+
+        window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();
+
+        document.getElementById('footerLink').addEventListener('click', function() {
+            appInsights.trackEvent({ name: 'FooterLinkClicked' });
+        });
+    </script>
 </body>
 </html>
