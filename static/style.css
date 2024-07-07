@@ -124,3 +124,26 @@ footer a:hover {
     color: #0056b3; /* Darker shade on hover for contrast */
     text-decoration: underline; /* Add underline on hover for emphasis */
 }
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px; /* Adjust size as needed */
+    margin: 0 5px; /* Adjust spacing as needed */
+    color: #333; /* Adjust color as needed */
+    padding: 0;
+    outline: none;
+    box-shadow: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-button i {
+    pointer-events: none; /* Ensure the icon is not the clickable part, the button is */
+}
+
+.icon-button:hover {
+    color: #007bff; /* Adjust hover color as needed */
+}

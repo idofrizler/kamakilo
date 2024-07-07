@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>כמה קילו?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script type="text/javascript">
         var appInsights=window.appInsights||function(a){
@@ -22,7 +23,8 @@
         }({
             instrumentationKey:"63aa1841-c6f2-4739-97df-a839e5f680cc"
         });
-        window.appInsights=appInsights,appInsights.trackPageView();
+        window.appInsights = appInsights;
+        appInsights.trackPageView(null, null, { urlReferrer: document.referrer });
     </script>
 </head>
 <body>
@@ -62,7 +64,7 @@
                 <select id="meatPreferences" name="meatPreferences" multiple required>
                 </select>
             </div>
-            <button type="button" onclick="calculateMeat()">חשב</button>
+            <button type="button" onclick="calculateMeat()">חשב כמויות</button>
         </form>
         <div id="results"></div>
         <div id="totalMeat"></div>
@@ -82,7 +84,7 @@
             if (footerLink) {
                 footerLink.addEventListener('click', function() {
                     if (window.appInsights) {
-                        appInsights.trackEvent({ name: 'FooterLinkClicked' });
+                        appInsights.trackEvent('FooterLinkClicked');
                     }
                 });
             }

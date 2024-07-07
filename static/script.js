@@ -98,9 +98,18 @@ function calculateMeat() {
     // Add copy button only if there are results
     if (Object.keys(meatQuantities).length > 0) {
         var copyButton = document.createElement('button');
-        copyButton.textContent = 'העתק כמויות';
+        copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+        copyButton.title = 'העתק כמויות';
+        copyButton.classList.add('icon-button'); // Add a class for styling
         copyButton.onclick = copyToClipboard;
         copyContainer.appendChild(copyButton);
+    
+        var whatsappButton = document.createElement('button');
+        whatsappButton.innerHTML = '<i class="fab fa-whatsapp"></i>';
+        whatsappButton.title = 'שתף ב-WhatsApp';
+        whatsappButton.classList.add('icon-button'); // Add a class for styling
+        whatsappButton.onclick = shareOnWhatsApp;
+        copyContainer.appendChild(whatsappButton);    
     }
 }
 
@@ -118,7 +127,7 @@ function distributeMeat(meats, weight) {
     });
 }
 
-function copyToClipboard() {
+function generateCopyText() {
     var copyText = "";
     Object.keys(meatQuantities).forEach(meat => {
         if (typeof meatQuantities[meat] === 'object') {
@@ -127,6 +136,11 @@ function copyToClipboard() {
             copyText += `${CONFIG.MEAT_NAMES_HE[meat]}: ${Math.ceil(meatQuantities[meat])} גרם\n`;
         }
     });
+    return copyText;
+}
+
+function copyToClipboard() {
+    var copyText = generateCopyText();
 
     // Copy text to clipboard
     navigator.clipboard.writeText(copyText).then(function() {
@@ -135,6 +149,12 @@ function copyToClipboard() {
         console.error('Could not copy text: ', err);
         showCopyMessage("אירעה שגיאה בהעתקה");
     });
+}
+
+function shareOnWhatsApp() {
+    var text = generateCopyText();
+    var url = "https://api.whatsapp.com/send/?text=" + encodeURIComponent(text);
+    window.open(url, '_blank');
 }
 
 function displayResults(meatQuantities) {
