@@ -97,19 +97,48 @@ function calculateMeat() {
 
     // Add copy button only if there are results
     if (Object.keys(meatQuantities).length > 0) {
+        var buttonContainer = document.createElement('div');
+        buttonContainer.id = 'buttonContainer';
+        buttonContainer.classList.add('button-container');
+
+        var shareContainer = document.createElement('div');
+        shareContainer.classList.add('share-container');
+        // shareContainer.appendChild(document.createTextNode('שיתוף')); // Add trailing text
+
         var copyButton = document.createElement('button');
-        copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+        copyButton.innerHTML = '<i class="far fa-copy"></i>';
         copyButton.title = 'העתק כמויות';
         copyButton.classList.add('icon-button'); // Add a class for styling
         copyButton.onclick = copyToClipboard;
-        copyContainer.appendChild(copyButton);
-    
+        shareContainer.appendChild(copyButton);
+
         var whatsappButton = document.createElement('button');
+        whatsappButton.id = 'whatsappButton';
         whatsappButton.innerHTML = '<i class="fab fa-whatsapp"></i>';
         whatsappButton.title = 'שתף ב-WhatsApp';
         whatsappButton.classList.add('icon-button'); // Add a class for styling
         whatsappButton.onclick = shareOnWhatsApp;
-        copyContainer.appendChild(whatsappButton);    
+        shareContainer.appendChild(whatsappButton);
+
+        buttonContainer.appendChild(shareContainer);
+
+        var bugContainer = document.createElement('div');
+        bugContainer.classList.add('bug-container');
+        // bugContainer.appendChild(document.createTextNode('דווחו על בעיה:')); // Add trailing text
+
+        var bugButton = document.createElement('button');
+        bugButton.id = 'bugButton';
+        bugButton.innerHTML = '<i class="fas fa-bug"></i>';
+        bugButton.title = 'דווח על בעיה';
+        bugButton.classList.add('icon-button');
+        bugButton.onclick = function() {
+            window.open(''); // Add the URL to your bug report form
+        };
+        bugContainer.appendChild(bugButton);
+
+        buttonContainer.appendChild(bugContainer);
+
+        copyContainer.appendChild(buttonContainer);
     }
 }
 

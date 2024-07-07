@@ -4,6 +4,23 @@ body {
     text-align: right;
 }
 
+input[type="number"],
+select {
+    width: 100%; /* Ensure the dropdown takes full width */
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border: 1px solid #ccc; /* Consistent border */
+    border-radius: 5px; /* Slight rounding to match other inputs */
+    appearance: none; /* Remove default styling */
+    -webkit-appearance: none; /* Remove default styling for Safari */
+    -moz-appearance: none; /* Remove default styling for Firefox */
+    background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><polygon points="0,0 20,0 10,10" fill="#333"/></svg>') no-repeat right 10px center;
+    background-size: 10px; /* Size of the arrow */
+    direction: rtl; /* Explicitly set RTL direction */
+    text-align: right; /* Ensure text alignment is correct */
+}
+
 .container {
     max-width: 600px;
     margin: 0 auto;
@@ -31,10 +48,12 @@ form {
 
 #form-group-adult {
     margin-left: 5px;
+    flex-grow: 1;
 }
 
 #form-group-children {
     margin-right: 5px;
+    flex-grow: 1;
 }
 
 label {
@@ -42,15 +61,7 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="number"],
-select {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-}
-
-button {
+#calcButton {
     padding: 10px 20px;
     background-color: #007BFF;
     color: white;
@@ -62,7 +73,7 @@ button {
     text-align: center;
 }
 
-button:hover {
+#calcButton:hover {
     background-color: #0056b3;
 }
 
@@ -89,21 +100,26 @@ input[type="range"] {
     color: green; /* Change color to your preference */
 }
 
-#copyContainer {
+#buttonContainer {
     margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
-#copyContainer button {
-    padding: 10px 20px;
-    background-color: #007BFF; /* Default color, change as needed */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+#bug-container {
+    margin-right: 5px;
 }
 
-#copyContainer button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+#share-container {
+    margin-left: 5px;
+}
+
+#whatsappButton {
+    color: #25d366;
+}
+
+#bugButton {
+    color: #dc3545;
 }
 
 footer {
