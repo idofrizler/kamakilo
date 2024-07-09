@@ -1,13 +1,26 @@
 from flask import Flask, render_template, request, jsonify
-from dotenv import load_dotenv
+from applicationinsights import TelemetryClient
 import os
-
-load_dotenv()  # Load environment variables from .env file
+import logging
+from logging import StreamHandler
 
 app = Flask(__name__)
+instrumentation_key = os.getenv('APPINSIGHTS_INSTRUMENTATIONKEY')
+appinsights = TelemetryClient(instrumentation_key=instrumentation_key)
+
+streamHandler = StreamHandler()
+app.logger.setLevel(logging.DEBUG)
+app.logger.addHandler(streamHandler)
 
 @app.route('/')
 def index():
+    appinsights.track_event('Landing page loaded')
+    
+    referer = request.headers.get('Referer') if request.headers.get('Referer') else 'None'
+    appinsights.track_event('Referer', { 'Referer': referer })
+    
+    appinsights.flush()
+
     return render_template('index.html')
 
 @app.route('/calculate', methods=['POST'])
@@ -26,6 +39,9 @@ def calculate():
         meat_factor = 2
 
     meat_quantities = {meat: total_people * meat_factor for meat in meat_preferences}
+
+    appinsights.track_event('Meat quantities calculated', { 'meatQuantities': meat_quantities })
+    appinsights.flush()
 
     return jsonify(meat_quantities)
 
