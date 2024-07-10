@@ -87,30 +87,6 @@
                     }
                 });
             }
-            var copyContainer = document.getElementById('copyButton');
-            if (copyContainer) {
-                copyContainer.addEventListener('click', function() {
-                    if (window.appInsights) {
-                        appInsights.trackEvent('Copy to clipboard clicked');
-                    }
-                });
-            }
-            var whatsappButton = document.getElementById('whatsappButton');
-            if (whatsappButton) {
-                whatsappButton.addEventListener('click', function() {
-                    if (window.appInsights) {
-                        appInsights.trackEvent('Share on WhatsApp clicked');
-                    }
-                });
-            }
-            var bugButton = document.getElementById('bugButton');
-            if (bugButton) {
-                bugButton.addEventListener('click', function() {
-                    if (window.appInsights) {
-                        appInsights.trackEvent('Report a bug clicked');
-                    }
-                });
-            }
         });
     </script>
 </body>

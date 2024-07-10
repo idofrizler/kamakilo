@@ -101,6 +101,10 @@ function calculateMeat() {
     
     trackMeatQuantities(meatQuantities, eventDetails);
 
+    showButtons();
+}
+
+function showButtons() {
     // Remove previously added copy button if any
     var copyContainer = document.getElementById('copyContainer');
     copyContainer.innerHTML = '';
@@ -113,7 +117,6 @@ function calculateMeat() {
 
         var shareContainer = document.createElement('div');
         shareContainer.classList.add('share-container');
-        // shareContainer.appendChild(document.createTextNode('שיתוף')); // Add trailing text
 
         var copyButton = document.createElement('button');
         copyButton.id = 'copyButton';
@@ -135,7 +138,6 @@ function calculateMeat() {
 
         var bugContainer = document.createElement('div');
         bugContainer.classList.add('bug-container');
-        // bugContainer.appendChild(document.createTextNode('דווחו על בעיה:')); // Add trailing text
 
         var bugButton = document.createElement('button');
         bugButton.id = 'bugButton';
@@ -143,8 +145,80 @@ function calculateMeat() {
         bugButton.title = 'דווח על בעיה';
         bugButton.classList.add('icon-button');
         bugButton.onclick = function() {
-            window.open(''); // Add the URL to your bug report form
-        };
+            appInsights.trackEvent('Report a bug clicked');
+        
+            // Create an overlay
+            var overlay = document.createElement('div');
+            overlay.id = 'overlay';
+            overlay.classList.add('overlay');
+            
+            var overlayContent = document.createElement('div');
+            overlayContent.classList.add('overlay-content');
+        
+            var closeButton = document.createElement('button');
+            closeButton.classList.add('close-button');
+            closeButton.innerHTML = '&times;';
+            closeButton.style.float = 'left';  // Move the close button to the left
+            closeButton.onclick = function() {
+                document.body.removeChild(overlay);
+            };
+        
+            var reportForm = document.createElement('form');
+            reportForm.id = 'reportForm';
+        
+            var issueLabel = document.createElement('label');
+            issueLabel.for = 'issue';
+            issueLabel.textContent = 'תיאור הבעיה:';
+            var issueTextarea = document.createElement('textarea');
+            issueTextarea.id = 'issue';
+            issueTextarea.name = 'issue';
+            issueTextarea.required = true;
+            issueTextarea.style.fontFamily = 'Arial, sans-serif';  // Use a more readable font
+        
+            var submitButton = document.createElement('button');
+            submitButton.type = 'submit';
+            submitButton.textContent = 'שלח';
+            submitButton.onclick = function(event) {
+                event.preventDefault();
+                var issueDescription = issueTextarea.value;
+                appInsights.trackEvent('Bug Reported', { issue: issueDescription });
+        
+                // Replace form content with a confirmation message
+                overlayContent.innerHTML = '';
+                overlayContent.appendChild(closeButton);  // Keep the close button
+                var confirmationMessage = document.createElement('p');
+                confirmationMessage.id = 'confirmationMessage';
+                
+                confirmationMessage.style.textAlign = 'center';
+                confirmationMessage.style.marginTop = '36px';
+                confirmationMessage.style.marginLeft = '18px';
+                confirmationMessage.style.marginRight = '18px';
+                confirmationMessage.style.fontSize = '1.2em';
+                confirmationMessage.style.display = 'flex';
+                confirmationMessage.style.flexDirection = 'column';
+                confirmationMessage.style.alignItems = 'center';
+                confirmationMessage.style.justifyContent = 'center';
+
+                confirmationMessage.textContent = 'תודה על הדיווח! נשתדל לטפל בבעיה בהקדם האפשרי.';
+                overlayContent.appendChild(confirmationMessage);
+            };
+        
+            reportForm.appendChild(issueLabel);
+            reportForm.appendChild(issueTextarea);
+            reportForm.appendChild(submitButton);
+        
+            overlayContent.appendChild(closeButton);
+            overlayContent.appendChild(reportForm);
+            overlay.appendChild(overlayContent);
+        
+            overlay.onclick = function(event) {
+                if (event.target === overlay) {
+                    document.body.removeChild(overlay);
+                }
+            };
+        
+            document.body.appendChild(overlay);
+        };        
         bugContainer.appendChild(bugButton);
 
         buttonContainer.appendChild(bugContainer);
@@ -187,18 +261,17 @@ function generateCopyText() {
 }
 
 function copyToClipboard() {
+    appInsights.trackEvent('Copy to clipboard clicked');
+
     var copyText = generateCopyText();
 
     // Copy text to clipboard
-    navigator.clipboard.writeText(copyText).then(function() {
-        showCopyMessage("הועתק ללוח");
-    }, function(err) {
-        console.error('Could not copy text: ', err);
-        showCopyMessage("אירעה שגיאה בהעתקה");
-    });
+    navigator.clipboard.writeText(copyText);
 }
 
 function shareOnWhatsApp() {
+    appInsights.trackEvent('Share on WhatsApp clicked');
+
     var text = generateCopyText();
     var url = "https://api.whatsapp.com/send/?text=" + encodeURIComponent(text);
     window.open(url, '_blank');
@@ -299,4 +372,3 @@ function adjustMeat(slider) {
         displayResults(meatQuantities);
     }, 200); // Adjust the debounce delay as needed
 }
-
