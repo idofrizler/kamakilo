@@ -91,6 +91,16 @@ function calculateMeat() {
 
     displayResults(meatQuantities);
 
+    let eventDetails = {
+        adults: adults,
+        kids: kids,
+        hungerLevel: hungerLevel,
+        eventType: eventType,
+        selectedMeats: selectedMeats
+    };
+    
+    trackMeatQuantities(meatQuantities, eventDetails);
+
     // Remove previously added copy button if any
     var copyContainer = document.getElementById('copyContainer');
     copyContainer.innerHTML = '';
@@ -106,6 +116,7 @@ function calculateMeat() {
         // shareContainer.appendChild(document.createTextNode('שיתוף')); // Add trailing text
 
         var copyButton = document.createElement('button');
+        copyButton.id = 'copyButton';
         copyButton.innerHTML = '<i class="far fa-copy"></i>';
         copyButton.title = 'העתק כמויות';
         copyButton.classList.add('icon-button'); // Add a class for styling
@@ -140,6 +151,13 @@ function calculateMeat() {
 
         copyContainer.appendChild(buttonContainer);
     }
+}
+
+function trackMeatQuantities(meatQuantities, eventDetails) {
+    appInsights.trackEvent('MeatQuantitiesRecommended', {
+        'eventDetails': JSON.stringify(eventDetails), 
+        'meatQuantities': JSON.stringify(meatQuantities)
+    });
 }
 
 function distributeMeat(meats, weight) {

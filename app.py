@@ -23,27 +23,5 @@ def index():
 
     return render_template('index.html')
 
-@app.route('/calculate', methods=['POST'])
-def calculate():
-    data = request.json
-    adults = data['adults']
-    kids = data['kids']
-    hunger_level = data['hungerLevel']
-    meat_preferences = data['meatPreferences']
-
-    total_people = adults + kids
-    meat_factor = 1
-    if hunger_level == 'moderate':
-        meat_factor = 1.5
-    elif hunger_level == 'veryHungry':
-        meat_factor = 2
-
-    meat_quantities = {meat: total_people * meat_factor for meat in meat_preferences}
-
-    appinsights.track_event('Meat quantities calculated', { 'meatQuantities': meat_quantities })
-    appinsights.flush()
-
-    return jsonify(meat_quantities)
-
 if __name__ == '__main__':
     app.run(debug=True)

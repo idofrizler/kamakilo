@@ -5,7 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>כמה קילו?</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">       
+    <script type="text/javascript">
+        var appInsights=window.appInsights||function(a){
+            function e(a){
+                t[a]=function(){
+                    var e=arguments;t.queue.push(function(){
+                        t[a].apply(t,e)
+                    })
+                }
+            }
+            var t={config:a},n=document,o=window,i="script",s=n.createElement(i),r=n.getElementsByTagName(i)[0];
+            for(s.src="https://az416426.vo.msecnd.net/scripts/a/ai.0.js",r.parentNode.insertBefore(s,r),t.cookie=n.cookie,t.queue=[],e("trackEvent"),e("trackPageView"),e("trackException"),e("trackMetric"),e("trackDependency"),e("trackTrace"),e("setAuthenticatedUserContext"),e("clearAuthenticatedUserContext");t.queue.length;){
+                var c=t.queue.shift();t[c[0]].apply(t,c.slice(1))
+            }
+            return t
+        }({
+            instrumentationKey:"74eeeeee-3600-4e0a-8b74-c6ab84c7e03b"
+        });
+        window.appInsights=appInsights,appInsights.trackPageView();
+    </script>
 </head>
 <body>
     <div class="container">
@@ -58,5 +77,41 @@
 
     <script src="{{ url_for('static', filename='config.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            var footerLink = document.getElementById('footerLink');
+            if (footerLink) {
+                footerLink.addEventListener('click', function() {
+                    if (window.appInsights) {
+                        appInsights.trackEvent('Twitter link clicked');
+                    }
+                });
+            }
+            var copyContainer = document.getElementById('copyButton');
+            if (copyContainer) {
+                copyContainer.addEventListener('click', function() {
+                    if (window.appInsights) {
+                        appInsights.trackEvent('Copy to clipboard clicked');
+                    }
+                });
+            }
+            var whatsappButton = document.getElementById('whatsappButton');
+            if (whatsappButton) {
+                whatsappButton.addEventListener('click', function() {
+                    if (window.appInsights) {
+                        appInsights.trackEvent('Share on WhatsApp clicked');
+                    }
+                });
+            }
+            var bugButton = document.getElementById('bugButton');
+            if (bugButton) {
+                bugButton.addEventListener('click', function() {
+                    if (window.appInsights) {
+                        appInsights.trackEvent('Report a bug clicked');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
