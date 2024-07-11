@@ -158,7 +158,7 @@ function showButtons() {
             var closeButton = document.createElement('button');
             closeButton.classList.add('close-button');
             closeButton.innerHTML = '&times;';
-            closeButton.style.float = 'left';  // Move the close button to the left
+            //closeButton.style.float = 'left';  // Move the close button to the left
             closeButton.onclick = function() {
                 document.body.removeChild(overlay);
             };
@@ -166,6 +166,22 @@ function showButtons() {
             var reportForm = document.createElement('form');
             reportForm.id = 'reportForm';
         
+            // Dropdown for report type
+            var typeLabel = document.createElement('label');
+            typeLabel.for = 'reportType';
+            typeLabel.textContent = 'סוג הדיווח:';
+            var typeSelect = document.createElement('select');
+            typeSelect.id = 'reportType';
+            typeSelect.name = 'reportType';
+            var types = ['באג', "בקשת פיצ'ר", 'בעיה עם חישוב הכמויות'];
+            types.forEach(function(type) {
+                var option = document.createElement('option');
+                option.value = type;
+                option.textContent = type;
+                typeSelect.appendChild(option);
+            });
+        
+            // Text area for issue details
             var issueLabel = document.createElement('label');
             issueLabel.for = 'issue';
             issueLabel.textContent = 'תיאור הבעיה:';
@@ -177,32 +193,48 @@ function showButtons() {
         
             var submitButton = document.createElement('button');
             submitButton.type = 'submit';
-            submitButton.textContent = 'שלח';
+            submitButton.textContent = 'שלח/י';
             submitButton.onclick = function(event) {
                 event.preventDefault();
+                var reportType = typeSelect.value;
                 var issueDescription = issueTextarea.value;
-                appInsights.trackEvent('Bug Reported', { issue: issueDescription });
+                
+                // Collect meat quantities and event details
+                var eventDetails = {
+                    adults: document.getElementById('adults').value,
+                    kids: document.getElementById('kids').value,
+                    hungerLevel: document.getElementById('hungerLevel').value,
+                    eventType: document.getElementById('eventType').value,
+                    selectedMeats: Array.from(document.getElementById('meatPreferences').selectedOptions).map(option => option.value)
+                };
+        
+                // Track the event in Application Insights
+                appInsights.trackEvent('Bug Reported', {
+                    reportType: reportType,
+                    issue: issueDescription,
+                    eventDetails: JSON.stringify(eventDetails)
+                });
         
                 // Replace form content with a confirmation message
                 overlayContent.innerHTML = '';
                 overlayContent.appendChild(closeButton);  // Keep the close button
                 var confirmationMessage = document.createElement('p');
                 confirmationMessage.id = 'confirmationMessage';
-                
                 confirmationMessage.style.textAlign = 'center';
                 confirmationMessage.style.marginTop = '36px';
-                confirmationMessage.style.marginLeft = '18px';
-                confirmationMessage.style.marginRight = '18px';
+                confirmationMessage.style.marginLeft = '24px';
+                confirmationMessage.style.marginRight = '24px';
                 confirmationMessage.style.fontSize = '1.2em';
                 confirmationMessage.style.display = 'flex';
                 confirmationMessage.style.flexDirection = 'column';
                 confirmationMessage.style.alignItems = 'center';
                 confirmationMessage.style.justifyContent = 'center';
-
                 confirmationMessage.textContent = 'תודה על הדיווח! נשתדל לטפל בבעיה בהקדם האפשרי.';
                 overlayContent.appendChild(confirmationMessage);
             };
         
+            reportForm.appendChild(typeLabel);
+            reportForm.appendChild(typeSelect);
             reportForm.appendChild(issueLabel);
             reportForm.appendChild(issueTextarea);
             reportForm.appendChild(submitButton);
@@ -218,7 +250,7 @@ function showButtons() {
             };
         
             document.body.appendChild(overlay);
-        };        
+        };
         bugContainer.appendChild(bugButton);
 
         buttonContainer.appendChild(bugContainer);
