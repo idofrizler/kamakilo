@@ -270,11 +270,13 @@ function distributeMeat(meats, weight) {
     meats.forEach(meat => {
         var meatGrams = weight / meats.length;
         if (CONFIG.WEIGHT_PER_UNIT[meat]) {
+            meatGrams = Math.ceil(meatGrams / 100) * 100; // Round up to the nearest 100 grams
             meatQuantities[meat] = {
                 grams: Math.ceil(meatGrams / CONFIG.WEIGHT_PER_UNIT[meat]) * CONFIG.WEIGHT_PER_UNIT[meat],
                 units: Math.ceil(meatGrams / CONFIG.WEIGHT_PER_UNIT[meat])
             };
         } else {
+            meatGrams = Math.ceil(meatGrams / 100) * 100; // Round up to the nearest 100 grams
             meatQuantities[meat] = meatGrams;
         }
     });
@@ -363,6 +365,9 @@ function adjustMeat(slider) {
             newGrams = 0;
         }
 
+        // Round newGrams up to the nearest 100 grams
+        newGrams = Math.ceil(newGrams / 100) * 100;
+
         // Update the meat quantity with the adjusted value
         if (typeof meatQuantities[meat] === 'object') {
             meatQuantities[meat].grams = newGrams;
@@ -395,7 +400,7 @@ function adjustMeat(slider) {
                         meatQuantities[key].grams = Math.ceil(newPerMeatQuantity / CONFIG.WEIGHT_PER_UNIT[key]) * CONFIG.WEIGHT_PER_UNIT[key];
                         meatQuantities[key].units = Math.ceil(newPerMeatQuantity / CONFIG.WEIGHT_PER_UNIT[key]);
                     } else {
-                        meatQuantities[key] = Math.ceil(newPerMeatQuantity);
+                        meatQuantities[key] = Math.ceil(newPerMeatQuantity / 100) * 100; // Round up to the nearest 100 grams
                     }
                 }
             });
