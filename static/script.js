@@ -212,7 +212,8 @@ function showButtons() {
                 appInsights.trackEvent('Bug Reported', {
                     reportType: reportType,
                     issue: issueDescription,
-                    eventDetails: JSON.stringify(eventDetails)
+                    eventDetails: JSON.stringify(eventDetails),
+                    meatQuantities: JSON.stringify(meatQuantities)
                 });
         
                 // Replace form content with a confirmation message
