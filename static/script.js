@@ -312,7 +312,7 @@ function shareOnWhatsApp() {
 function displayResults(meatQuantities) {
     var resultsDiv = document.getElementById('results');
     var totalMeatDiv = document.getElementById('totalMeat');
-    resultsDiv.innerHTML = '<h3>כמויות בשרים מומלצות:</h3>';
+    resultsDiv.innerHTML = '<h3>כמויות בשרים מומלצות (ערכו לפי הצורך):</h3>';
     let totalGrams = 0;
 
     Object.keys(meatQuantities).forEach(meat => {

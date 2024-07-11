@@ -18,11 +18,12 @@ const CONFIG = {
         burgers: 'המבורגרים',
         skewers: 'שיפודי פרגית',
         chickenBreasts: 'חזה עוף',
+        wings: 'כנפיים',
         kebabs: 'קבבים',
         salmon: 'סלמון'
     },
     MEAT_COST: {
         PREMIUM: ['steaks', 'salmon'],
-        CHEAP: ['hotdogs', 'kebabs', 'skewers']
+        CHEAP: ['hotdogs', 'kebabs', 'skewers', 'wings']
     }
 };
